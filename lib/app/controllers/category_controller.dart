@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:coffee_app/app/models/category.dart';
 import 'package:coffee_app/app/response/response_item.dart';
 import 'package:coffee_app/app/services/category_service.dart';
