@@ -2,6 +2,7 @@ import 'package:coffee_app/app/models/dto/invoice-item.dto.dart';
 import 'package:coffee_app/app/models/dto/invoice.dto.dart';
 import 'package:coffee_app/app/models/invoice.dart';
 import 'package:coffee_app/app/models/invoice_detail.dart';
+import 'package:coffee_app/app/notification/toast_notification.dart';
 import 'package:coffee_app/app/response/response_item.dart';
 import 'package:coffee_app/app/services/invoice_service.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,6 @@ class InvoiceController extends GetxController {
   var hasPreviousPage = false.obs;
   var hasNextPage = false.obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -37,7 +37,8 @@ class InvoiceController extends GetxController {
     try {
       isLoading(true);
 
-      ResponseEntity<Invoice> fetchedProducts = await invoiceService.fetchInvoices(
+      ResponseEntity<Invoice> fetchedProducts =
+          await invoiceService.fetchInvoices(
         page: page.value,
         take: take.value,
         search: search.value,
@@ -55,7 +56,6 @@ class InvoiceController extends GetxController {
       isLoading(false);
     }
   }
-
 
   void addInvoiceDetail(InvoiceDetail detail, int index) {
     bool exists = invoiceDetails.any(
@@ -77,19 +77,16 @@ class InvoiceController extends GetxController {
   }
 
   void checkout() async {
-    // Assuming you need to create an InvoiceDto from the current invoice details
     if (invoiceDetails.isEmpty) {
       Get.snackbar("Error", "Invoice is empty!");
       return;
     }
 
-    double totalAmount = getTotalPaymentUSD(); // Calculate total payment
+    double totalAmount = getTotalPaymentUSD();
 
-    // Constructing InvoiceDto from current state
     InvoiceDto invoiceDto = InvoiceDto(
       totalAmount: totalAmount,
-      discount: invoice
-          ?.value?.discount, // Assuming Invoice model has a discount field
+      discount: invoice?.value?.discount,
       items: invoiceDetails
           .map((detail) => InvoiceItemDto(
                 productId: detail.product.id,
@@ -104,8 +101,13 @@ class InvoiceController extends GetxController {
     try {
       bool isCreated = await invoiceService.insertInvoice(invoiceDto);
       if (isCreated) {
-        Get.snackbar("Success", "Invoice added successfully!");
-        clearInvoice(); // Optionally clear the current invoice state on success
+        ToastNotification.success(
+          Get.context!,
+          title: "Checkout successfully",
+          description: "Invoice added successfully!",
+        );
+        clearInvoice();
+        await fetchInvoices();
       } else {
         Get.snackbar("Failure", "Invoice creation failed!");
       }

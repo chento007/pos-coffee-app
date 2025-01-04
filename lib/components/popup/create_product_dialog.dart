@@ -52,7 +52,7 @@ class _CreateProductDialogState extends State<CreateProductDialog> {
                     fillColor: Colors.white,
                   ),
                   value: selectedCategory,
-                  items: categoryController.categories.map((Category category) {
+                  items: categoryController.categoriesDashboard.map((Category category) {
                     return DropdownMenuItem<int>(
                       value: category.id, // Store the category ID as the value
                       child: Text(category.name),

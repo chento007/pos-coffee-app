@@ -51,13 +51,14 @@ class CategoryController extends GetxController {
       );
 
       // Update the category list
-      if (page == 1) {
+      if (page.value == 1) {
         categories.clear();
+        categoriesDashboard.clear();
         categories.add(defaultCategory);
       }
       categories.addAll(fetchedCategories.items);
+      categoriesDashboard.addAll(fetchedCategories.items);
 
-      // Assume the API returns a total page count (you can modify if it's different)
       totalPage.value = page.value;
       currentPage.value = page.value;
     } catch (e) {
