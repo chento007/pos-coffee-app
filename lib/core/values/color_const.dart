@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ColorConstant {
   // Primary Colors
   static const Color primary =
-      Color(0xFF198754); // Similar to Bootstrap's primary color
+      Color.fromARGB(215, 6, 6, 190); // Similar to Bootstrap's primary color
   static const Color secondary =
       Color(0xFF6C757D); // Bootstrap's secondary color
   static const Color success = Color(0xFF198754); // Bootstrap's success color

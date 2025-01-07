@@ -138,7 +138,7 @@ class EmployeePage extends StatelessWidget {
                               (index) => DataRow(
                                 cells: [
                                   DataCell(Text(
-                                      '${userController.users[index].id}')),
+                                      '${index + 1}')),
                                   DataCell(Text(
                                       userController.users[index].username)),
                                   DataCell(Text(Utils.formatMultiRoleName(

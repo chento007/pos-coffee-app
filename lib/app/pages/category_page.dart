@@ -124,8 +124,7 @@ class CategoryPage extends StatelessWidget {
                               categoryController.categoriesDashboard.length,
                               (index) => DataRow(
                                 cells: [
-                                  DataCell(Text(
-                                      '${categoryController.categoriesDashboard[index].id}')),
+                                  DataCell(Text('${index + 1}')),
                                   DataCell(Text(categoryController
                                       .categoriesDashboard[index].name)),
                                   DataCell(Text(categoryController

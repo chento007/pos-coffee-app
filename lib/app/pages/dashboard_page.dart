@@ -140,7 +140,7 @@ class DashboardPage extends StatelessWidget {
                               (index) => DataRow(
                                 cells: [
                                   DataCell(Text(
-                                      '${productController.productDashboard[index].id}')),
+                                      '${index + 1}')),
                                   DataCell(Text(productController
                                       .productDashboard[index].name)),
                                   DataCell(Text(

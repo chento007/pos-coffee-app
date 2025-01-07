@@ -118,6 +118,24 @@ class InvoiceController extends GetxController {
     }
   }
 
+  void nextPage() {
+    if (currentPage.value < totalPages.value) {
+      currentPage.value++;
+      fetchInvoices();
+    }
+  }
+
+  void previousPage() {
+    if (currentPage.value > 1) {
+      currentPage.value--;
+      fetchInvoices();
+    }
+  }
+
+  void onChangeSearchTitle() {
+    fetchInvoices();
+  }
+
   void removeInvoiceDetail(InvoiceDetail detail) {
     invoiceDetails.remove(detail);
   }
@@ -140,7 +158,7 @@ class InvoiceController extends GetxController {
     for (var detail in invoiceDetails) {
       subTotal += detail.subTotal;
     }
-    return subTotal;
+    return double.parse(subTotal.toStringAsFixed(2));
   }
 
   double applyDiscountToAll() {
@@ -149,7 +167,7 @@ class InvoiceController extends GetxController {
       double productDiscount = detail.subTotal * (detail.discount / 100);
       totalDiscount += productDiscount;
     }
-    return totalDiscount;
+    return double.parse(totalDiscount.toStringAsFixed(2));
   }
 
   double getDiscountAmount() {
@@ -160,13 +178,14 @@ class InvoiceController extends GetxController {
     double subTotal = getSubTotal();
     double totalDiscount = applyDiscountToAll();
     double totalPayment = subTotal - totalDiscount;
-    return totalPayment;
+    return double.parse(totalPayment.toStringAsFixed(2));
   }
 
   double getTotalPaymentRiel() {
     double totalUSD = getTotalPaymentUSD();
     const exchangeRate = 4000;
-    return totalUSD * exchangeRate;
+    double totalRiel = totalUSD * exchangeRate;
+    return double.parse(totalRiel.toStringAsFixed(2));
   }
 
   void increaseQuantity(int index) {

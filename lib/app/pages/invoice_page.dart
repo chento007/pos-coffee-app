@@ -62,7 +62,7 @@ class InvoicePage extends StatelessWidget {
                       onChanged: (int? newValue) {
                         if (newValue != null) {
                           invoiceController.take.value = newValue;
-                          // invoiceController.onChangeSearchTitle();
+                          invoiceController.onChangeSearchTitle();
                         }
                       },
                       items: paginationLimits
@@ -105,7 +105,7 @@ class InvoicePage extends StatelessWidget {
                               (index) => DataRow(
                                 cells: [
                                   DataCell(Text(
-                                      '${invoiceController.invoiceDashboard[index].id}')),
+                                      '${index + 1}')),
                                   DataCell(Text(
                                       "${invoiceController.invoiceDashboard[index].totalAmount}")),
                                   DataCell(Text(
@@ -164,7 +164,7 @@ class InvoicePage extends StatelessWidget {
                                 onTap: invoiceController.hasPreviousPage.value
                                     ? () {
                                         invoiceController.page.value -= 1;
-                                        // invoiceController.onChangeSearchTitle();
+                                        invoiceController.onChangeSearchTitle();
                                       }
                                     : null,
                                 child: Container(
@@ -199,7 +199,7 @@ class InvoicePage extends StatelessWidget {
                                   return InkWell(
                                     onTap: () {
                                       invoiceController.page.value = index + 1;
-                                      // invoiceController.onChangeSearchTitle();
+                                      invoiceController.onChangeSearchTitle();
                                     },
                                     child: Container(
                                       width: 50,
@@ -242,7 +242,7 @@ class InvoicePage extends StatelessWidget {
                                 onTap: invoiceController.hasNextPage.value
                                     ? () {
                                         invoiceController.page.value += 1;
-                                        // invoiceController.onChangeSearchTitle();
+                                        invoiceController.onChangeSearchTitle();
                                       }
                                     : null,
                                 child: Container(
