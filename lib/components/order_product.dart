@@ -37,63 +37,49 @@ class OrderProduct extends StatelessWidget {
 
     return Obx(() {
       return Center(
-        child: Stack(
+        child: Column(
           children: [
-            // Scrollable list of items
-            Positioned.fill(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: isPhone ? 160.0 : (isTablet ? 180.0 : 200.0),
-                ), // Reserve space for the bottom summary
-                child: SingleChildScrollView(
-                  child: Container(
-                    color: Colors.white,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: invoiceController.invoiceDetails.length,
-                      itemBuilder: (context, index) => CardOrder(
-                        qty: invoiceController.invoiceDetails[index].quantity,
-                        handleRemoveItem: () {
-                          invoiceController.removeInvoiceDetail(
-                              invoiceController.invoiceDetails[index]);
-                        },
-                        invoiceDetail: invoiceController.invoiceDetails[index],
-                        decrementQuantity: () {
-                          invoiceController.decreaseQuantity(index);
-                        },
-                        incrementQuantity: () {
-                          invoiceController.increaseQuantity(index);
-                        },
-                        handleEdit: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => EditOrderItemDialog(
-                              index: index,
-                              discount: invoiceController
-                                  .invoiceDetails[index].discount,
-                              price: invoiceController
-                                  .invoiceDetails[index].unitPrice,
-                              onUpdate: (p0) {},
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+            Expanded(
+              flex: 6,
+              child: Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: invoiceController.invoiceDetails.length,
+                  itemBuilder: (context, index) => CardOrder(
+                    qty: invoiceController.invoiceDetails[index].quantity,
+                    handleRemoveItem: () {
+                      invoiceController.removeInvoiceDetail(
+                          invoiceController.invoiceDetails[index]);
+                    },
+                    invoiceDetail: invoiceController.invoiceDetails[index],
+                    decrementQuantity: () {
+                      invoiceController.decreaseQuantity(index);
+                    },
+                    incrementQuantity: () {
+                      invoiceController.increaseQuantity(index);
+                    },
+                    handleEdit: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => EditOrderItemDialog(
+                          index: index,
+                          discount: invoiceController
+                              .invoiceDetails[index].discount,
+                          price: invoiceController
+                              .invoiceDetails[index].unitPrice,
+                          onUpdate: (p0) {},
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
+            Expanded(
+              flex: 5,
               child: Container(
                 padding: EdgeInsets.all(padding),
-                margin: EdgeInsets.symmetric(
-                  horizontal: padding,
-                  vertical: padding / 2,
-                ),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
@@ -198,13 +184,46 @@ class OrderProduct extends StatelessWidget {
           title: "Discount all",
         ),
         const SizedBox(height: 10),
-        ButtonOrderProduct(
-          onPressed: () async {
-            print("invoice detail: ${invoiceController.invoiceDetails}");
-            invoiceController.checkout();
-          },
-          title: "Check out",
-        ),
+        invoiceController.invoiceDetails.length > 0
+            ? ButtonOrderProduct(
+                onPressed: () async {
+                  // Show a confirmation dialog
+                  final shouldProceed = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Confirm Checkout'),
+                        content: Text(
+                            'Are you sure you want to proceed with checkout?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false); // User cancels
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true); // User confirms
+                            },
+                            child: Text('Confirm'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  // Proceed with the checkout if the user confirmed
+                  if (shouldProceed == true) {
+                    print(
+                        "invoice detail: ${invoiceController.invoiceDetails}");
+                    invoiceController.checkout();
+                  }
+                },
+                title: "Check out",
+              )
+            : SizedBox(), // Fallback if no invoice details
+
         const SizedBox(height: 10),
       ],
     );

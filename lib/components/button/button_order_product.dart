@@ -34,9 +34,9 @@ class ButtonOrderProduct extends StatelessWidget {
     final double padding = isPhone
         ? 8.0
         : isTablet
-            ? 10.0
+            ? 8.0
             : isDesktop
-                ? 12.0
+                ?8.0
                 : 6.0; // Minimal padding for extra small
 
     final double fontSize = isPhone
@@ -52,7 +52,7 @@ class ButtonOrderProduct extends StatelessWidget {
         : isTablet
             ? 20.0
             : isDesktop
-                ? 24.0
+                ? 20.0
                 : 16.0; // Smaller icon size for extra small
 
     final double borderRadius = isPhone

@@ -121,6 +121,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return PageView(
       controller: _pageController,
       onPageChanged: (index) {},
+      physics: NeverScrollableScrollPhysics(),
       children: [
         _buildProductTabView(crossAxisCount),
         const ReportPage(),
@@ -181,7 +182,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 3,
                     child: SizedBox(child: OrderProduct()),
                   ),
                 ],

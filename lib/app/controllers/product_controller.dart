@@ -1,4 +1,5 @@
 import 'package:coffee_app/app/models/product.dart';
+import 'package:coffee_app/app/notification/toast_notification.dart';
 import 'package:coffee_app/app/response/response_item.dart';
 import 'package:coffee_app/app/services/product_service.dart';
 import 'package:get/get.dart';
@@ -90,8 +91,7 @@ class ProductController extends GetxController {
           await apiService.insertProduct(name, description, price, categoryId);
 
       if (isCreated) {
-        Get.snackbar(
-            "Success", "Product added successfully!");
+        Get.snackbar("Success", "Product added successfully!");
         fetchProduct();
       } else {
         Get.snackbar("Failure", "Product creation failed!");
@@ -114,8 +114,11 @@ class ProductController extends GetxController {
 
       if (isCreated) {
         // Fetch products again after successful creation
-        Get.snackbar(
-            "Success", "Update status successfully!"); // Show success message
+        ToastNotification.success(
+          Get.context!,
+          title: "Updated successfully",
+          description: "You have been update successfully.",
+        );
         fetchProduct();
       } else {
         Get.snackbar("Failure", "Update product failed!");
@@ -136,8 +139,11 @@ class ProductController extends GetxController {
       bool isCreated = await apiService.updatePopular(id);
 
       if (isCreated) {
-        Get.snackbar(
-            "Success", "Update status successfully!");
+        ToastNotification.success(
+          Get.context!,
+          title: "Updated successfully",
+          description: "You have been update successfully.",
+        );
         fetchProduct();
       } else {
         Get.snackbar("Failure", "Update product failed!");
@@ -157,8 +163,11 @@ class ProductController extends GetxController {
 
       await apiService.deleteById(id);
 
-      Get.snackbar(
-          "Success", "Delete status successfully!"); // Show success message
+      ToastNotification.success(
+        Get.context!,
+        title: "Delete successfully",
+        description: "You have been delete successfully.",
+      ); // Show success message
       fetchProduct();
     } catch (e) {
       hasError(true);
@@ -189,7 +198,11 @@ class ProductController extends GetxController {
       );
 
       if (isCreated) {
-        Get.snackbar("Update", "Product added successfully!");
+        ToastNotification.success(
+          Get.context!,
+          title: "Add successfully",
+          description: "You have been add successfully.",
+        );
         fetchProduct();
       } else {
         Get.snackbar("Failure", "Product creation failed!");
