@@ -40,7 +40,7 @@ class OrderProduct extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 6,
+              flex: 5,
               child: Container(
                 color: Colors.white,
                 child: ListView.builder(

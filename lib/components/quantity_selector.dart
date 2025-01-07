@@ -17,7 +17,7 @@ class QuantitySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double widthCont = 125;
-    double fontSizePrice = 10;
+    double fontSizePrice = 15;
     double heightBtnQty = 35;
     double widthBtnQty = 35;
     if (ScreenTypeDevice.isExtraSmall(context)) {

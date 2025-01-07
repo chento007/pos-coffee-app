@@ -25,13 +25,13 @@ class CardOrder extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(4),
         child: Row(
           children: [
             Expanded(
               flex: 8,
               child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: Column(
                   children: [
                     Row(
@@ -67,7 +67,7 @@ class CardOrder extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -91,7 +91,7 @@ class CardOrder extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
