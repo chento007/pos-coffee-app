@@ -6,6 +6,7 @@ import 'package:coffee_app/app/notification/toast_notification.dart';
 import 'package:coffee_app/app/response/response_item.dart';
 import 'package:coffee_app/app/services/invoice_service.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class InvoiceController extends GetxController {
   var invoice = Rx<Invoice?>(null);
@@ -118,7 +119,7 @@ class InvoiceController extends GetxController {
     }
   }
 
-  void nextPage() {
+    void nextPage() {
     if (currentPage.value < totalPages.value) {
       currentPage.value++;
       fetchInvoices();
@@ -181,12 +182,15 @@ class InvoiceController extends GetxController {
     return double.parse(totalPayment.toStringAsFixed(2));
   }
 
-  double getTotalPaymentRiel() {
-    double totalUSD = getTotalPaymentUSD();
-    const exchangeRate = 4000;
-    double totalRiel = totalUSD * exchangeRate;
-    return double.parse(totalRiel.toStringAsFixed(2));
-  }
+String getTotalPaymentRiel() {
+  double totalUSD = getTotalPaymentUSD();
+  const exchangeRate = 4000;
+  double totalRiel = totalUSD * exchangeRate;
+
+  // Format with thousands separator
+  final formatter = NumberFormat("#,###.##");
+  return formatter.format(totalRiel);
+}
 
   void increaseQuantity(int index) {
     if (index < 0 || index >= invoiceDetails.length) {
