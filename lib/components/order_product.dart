@@ -1,6 +1,9 @@
 import 'package:coffee_app/app/controllers/invoice_controller.dart';
 import 'package:coffee_app/components/button/button_order_product.dart';
 import 'package:coffee_app/components/card_order.dart';
+import 'package:coffee_app/components/popup/cashInputDialog.dart';
+import 'package:coffee_app/components/popup/confirm_check_out_aba.dart';
+import 'package:coffee_app/components/popup/confirm_clear_dialog.dart';
 import 'package:coffee_app/components/popup/edit_order_item_dialog.dart';
 import 'package:coffee_app/components/popup/edit_order_items_dialog.dart';
 import 'package:coffee_app/core/utils/screen_type_device.dart';
@@ -168,52 +171,7 @@ class OrderProduct extends StatelessWidget {
               child: ButtonOrderProduct(
                 onPressed: () {
                   // Show confirmation dialog
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                    
-                      title: const Text(
-                        "Confirm Action",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      content: const Text(
-                        "Are you sure you want to clear all items? This action cannot be undone.",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      actions: [
-                        Row(
-                          mainAxisAlignment:  MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text(
-                                "Cancel",
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.find<InvoiceController>().clearInvoice();
-                                Navigator.of(context).pop();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.redAccent,
-                              ),
-                              child: const Text(
-                                "Confirm",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  );
+                  ConfirmClearDialog.show(context);
                 },
                 title: "Clear all",
                 icon: const Icon(
@@ -251,38 +209,18 @@ class OrderProduct extends StatelessWidget {
                     child: ButtonOrderProduct(
                       buttonColor: ColorConstant.saveGreen,
                       icon: Icon(Icons.price_check_rounded),
-                      onPressed: () async {
-                        // Show a confirmation dialog
-                        final shouldProceed = await showDialog<bool>(
+                      onPressed: () {
+                        showDialog(
                           context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Confirm Checkout'),
-                              content: const Text(
-                                  'Are you sure you want to proceed with checkout?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(false); // User cancels
-                                  },
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(true); // User confirms
-                                  },
-                                  child: Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
+                          builder: (context) => CashInputDialog(
+                            totalDollar: invoiceController.getTotalPaymentUSD(),
+                            totalRiel: invoiceController.getTotalPaymentRiel(),
+                            onConfirm: (dollar, riel) {
+                              // Handle the confirmed input values
+                              print("Dollar: $dollar, Riel: $riel");
+                            },
+                          ),
                         );
-
-                        if (shouldProceed == true) {
-                          invoiceController.checkout();
-                        }
                       },
                       title: "Checkout Cash",
                     ),
@@ -296,38 +234,8 @@ class OrderProduct extends StatelessWidget {
                     child: ButtonOrderProduct(
                       buttonColor: ColorConstant.saveGreen,
                       icon: Icon(Icons.sim_card_rounded),
-                      onPressed: () async {
-                        final shouldProceed = await showDialog<bool>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Confirm Checkout'),
-                              content: Text(
-                                  'Are you sure you want to proceed with checkout?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(true); // User confirms
-                                  },
-                                  child: Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-
-                        if (shouldProceed == true) {
-                          print(
-                              "invoice detail: ${invoiceController.invoiceDetails}");
-                          invoiceController.checkout();
-                        }
+                      onPressed: () {
+                        ConfirmCheckOutAba.show(context);
                       },
                       title: "Checkout ABA",
                     ),
