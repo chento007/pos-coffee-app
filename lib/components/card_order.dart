@@ -10,9 +10,11 @@ class CardOrder extends StatelessWidget {
   final VoidCallback incrementQuantity;
   final VoidCallback decrementQuantity;
   final VoidCallback handleEdit;
+  final int order;
 
   const CardOrder(
       {super.key,
+      required this.order,
       required this.invoiceDetail,
       required this.handleRemoveItem,
       required this.incrementQuantity,
@@ -37,58 +39,46 @@ class CardOrder extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              invoiceDetail.product.name,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            "${order}. ${invoiceDetail.product.name} ",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
+                          ),
                         ),
-                        InkWell(
-                          onTap: handleRemoveItem,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF45A58),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(6),
-                              ),
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            "\$ ${invoiceDetail.unitPrice} (${invoiceDetail.discount}%)",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                            padding: const EdgeInsets.all(5),
-                            child: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: handleRemoveItem,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFF45A58),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(6),
+                                ),
+                              ),
+                              padding: const EdgeInsets.all(5),
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                                size: 18,
+                              ),
                             ),
                           ),
                         )
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "\$ ${invoiceDetail.unitPrice}  ",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "( Discount ${invoiceDetail.discount}% )",
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorConstant.discount),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -106,9 +96,10 @@ class CardOrder extends StatelessWidget {
                                 Icon(
                                   Icons.edit,
                                   color: ColorConstant.white,
+                                  size: 15,
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 3,
                                 ),
                                 Text(
                                   "Edit",

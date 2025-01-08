@@ -49,7 +49,6 @@ class InvoiceController extends GetxController {
       pageCount.value = fetchedProducts.pageCount;
       hasPreviousPage.value = fetchedProducts.hasPreviousPage;
       hasNextPage.value = fetchedProducts.hasNextPage;
-      print("invoices response: ${fetchedProducts.items}");
       invoiceDashboard.assignAll(fetchedProducts.items);
     } catch (e) {
       print('Error fetching invoice: $e');
@@ -62,17 +61,7 @@ class InvoiceController extends GetxController {
     bool exists = invoiceDetails.any(
         (existingDetail) => existingDetail.product.id == detail.product.id);
 
-    if (exists) {
-      var existingDetail = invoiceDetails.firstWhere(
-          (existingDetail) => existingDetail.product.id == detail.product.id);
-      existingDetail.quantity += detail.quantity;
-      existingDetail.subTotal =
-          existingDetail.quantity * existingDetail.unitPrice;
-
-      invoiceDetails.assignAll([...invoiceDetails]);
-    } else {
-      invoiceDetails.add(detail);
-    }
+    invoiceDetails.add(detail);
 
     update();
   }
@@ -119,7 +108,7 @@ class InvoiceController extends GetxController {
     }
   }
 
-    void nextPage() {
+  void nextPage() {
     if (currentPage.value < totalPages.value) {
       currentPage.value++;
       fetchInvoices();
@@ -182,15 +171,15 @@ class InvoiceController extends GetxController {
     return double.parse(totalPayment.toStringAsFixed(2));
   }
 
-String getTotalPaymentRiel() {
-  double totalUSD = getTotalPaymentUSD();
-  const exchangeRate = 4000;
-  double totalRiel = totalUSD * exchangeRate;
+  String getTotalPaymentRiel() {
+    double totalUSD = getTotalPaymentUSD();
+    const exchangeRate = 4100;
+    double totalRiel = totalUSD * exchangeRate;
 
-  // Format with thousands separator
-  final formatter = NumberFormat("#,###.##");
-  return formatter.format(totalRiel);
-}
+    // Format with thousands separator
+    final formatter = NumberFormat("#,###.##");
+    return formatter.format(totalRiel);
+  }
 
   void increaseQuantity(int index) {
     if (index < 0 || index >= invoiceDetails.length) {

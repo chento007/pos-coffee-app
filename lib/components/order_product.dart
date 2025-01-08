@@ -47,6 +47,7 @@ class OrderProduct extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: invoiceController.invoiceDetails.length,
                   itemBuilder: (context, index) => CardOrder(
+                    order: index + 1,
                     qty: invoiceController.invoiceDetails[index].quantity,
                     handleRemoveItem: () {
                       invoiceController.removeInvoiceDetail(
@@ -64,10 +65,10 @@ class OrderProduct extends StatelessWidget {
                         context: context,
                         builder: (context) => EditOrderItemDialog(
                           index: index,
-                          discount: invoiceController
-                              .invoiceDetails[index].discount,
-                          price: invoiceController
-                              .invoiceDetails[index].unitPrice,
+                          discount:
+                              invoiceController.invoiceDetails[index].discount,
+                          price:
+                              invoiceController.invoiceDetails[index].unitPrice,
                           onUpdate: (p0) {},
                         ),
                       );
@@ -158,71 +159,183 @@ class OrderProduct extends StatelessWidget {
   Widget _buildButtonRow(
       BuildContext context, bool isPhone, bool isTablet, bool isDesktop) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ButtonOrderProduct(
-          onPressed: () {
-            Get.find<InvoiceController>().clearInvoice();
-          },
-          title: "Clear all",
-          icon: const Icon(
-            Icons.delete_forever,
-            color: Colors.white,
-          ),
-          buttonColor: Colors.redAccent,
-        ),
-        const SizedBox(height: 10),
-        ButtonOrderProduct(
-          buttonColor: ColorConstant.discount,
-          onPressed: () async {
-            showDialog(
-              context: context,
-              builder: (context) => EditOrderItemsDialog(
-                onUpdate: (p0) {},
-              ),
-            );
-          },
-          title: "Discount all",
-        ),
-        const SizedBox(height: 10),
-        invoiceController.invoiceDetails.length > 0
-            ? ButtonOrderProduct(
-                onPressed: () async {
-                  // Show a confirmation dialog
-                  final shouldProceed = await showDialog<bool>(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ButtonOrderProduct(
+                onPressed: () {
+                  // Show confirmation dialog
+                  showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Confirm Checkout'),
-                        content: Text(
-                            'Are you sure you want to proceed with checkout?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false); // User cancels
-                            },
-                            child: Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(true); // User confirms
-                            },
-                            child: Text('Confirm'),
-                          ),
-                        ],
-                      );
-                    },
+                    builder: (context) => AlertDialog(
+                    
+                      title: const Text(
+                        "Confirm Action",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      content: const Text(
+                        "Are you sure you want to clear all items? This action cannot be undone.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      actions: [
+                        Row(
+                          mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                "Cancel",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Get.find<InvoiceController>().clearInvoice();
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
+                              ),
+                              child: const Text(
+                                "Confirm",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
                   );
-
-                  // Proceed with the checkout if the user confirmed
-                  if (shouldProceed == true) {
-                    print(
-                        "invoice detail: ${invoiceController.invoiceDetails}");
-                    invoiceController.checkout();
-                  }
                 },
-                title: "Check out",
-              )
-            : SizedBox(), // Fallback if no invoice details
+                title: "Clear all",
+                icon: const Icon(
+                  Icons.delete_forever,
+                  color: Colors.white,
+                ),
+                buttonColor: Colors.redAccent,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: ButtonOrderProduct(
+                buttonColor: ColorConstant.warning,
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (context) => EditOrderItemsDialog(
+                      onUpdate: (p0) {},
+                    ),
+                  );
+                },
+                title: "Discount all",
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            invoiceController.invoiceDetails.isNotEmpty
+                ? Expanded(
+                    child: ButtonOrderProduct(
+                      buttonColor: ColorConstant.saveGreen,
+                      icon: Icon(Icons.price_check_rounded),
+                      onPressed: () async {
+                        // Show a confirmation dialog
+                        final shouldProceed = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirm Checkout'),
+                              content: const Text(
+                                  'Are you sure you want to proceed with checkout?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(false); // User cancels
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(true); // User confirms
+                                  },
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                        if (shouldProceed == true) {
+                          invoiceController.checkout();
+                        }
+                      },
+                      title: "Checkout Cash",
+                    ),
+                  )
+                : const SizedBox(),
+            SizedBox(
+              width: 10,
+            ),
+            invoiceController.invoiceDetails.isNotEmpty
+                ? Expanded(
+                    child: ButtonOrderProduct(
+                      buttonColor: ColorConstant.saveGreen,
+                      icon: Icon(Icons.sim_card_rounded),
+                      onPressed: () async {
+                        final shouldProceed = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Checkout'),
+                              content: Text(
+                                  'Are you sure you want to proceed with checkout?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(true); // User confirms
+                                  },
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                        if (shouldProceed == true) {
+                          print(
+                              "invoice detail: ${invoiceController.invoiceDetails}");
+                          invoiceController.checkout();
+                        }
+                      },
+                      title: "Checkout ABA",
+                    ),
+                  )
+                : SizedBox(),
+          ],
+        ),
+        // Fallback if no invoice details
 
         const SizedBox(height: 10),
       ],

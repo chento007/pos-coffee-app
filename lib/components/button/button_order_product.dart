@@ -21,7 +21,8 @@ class ButtonOrderProduct extends StatelessWidget {
     required this.onPressed,
     this.buttonColor = const Color(0xFFF5BC65), // Default gradient colors
     this.title = "Order Product", // Default title
-    this.icon = const Icon(Icons.shopping_cart, color: Colors.white, size: 24), // Default icon
+    this.icon = const Icon(Icons.shopping_cart,
+        color: Colors.white, size: 24), // Default icon
   });
 
   @override
@@ -36,7 +37,7 @@ class ButtonOrderProduct extends StatelessWidget {
         : isTablet
             ? 8.0
             : isDesktop
-                ?8.0
+                ? 8.0
                 : 6.0; // Minimal padding for extra small
 
     final double fontSize = isPhone
@@ -68,7 +69,7 @@ class ButtonOrderProduct extends StatelessWidget {
       splashColor: Colors.white.withOpacity(0.3), // Splash effect when clicked
       highlightColor: Colors.orange.withOpacity(0.1), // Highlight effect
       child: Container(
-        padding: EdgeInsets.all(padding), // Adjusted padding
+        padding: EdgeInsets.all(10), // Adjusted padding
         decoration: BoxDecoration(
           color: buttonColor,
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
@@ -90,14 +91,15 @@ class ButtonOrderProduct extends StatelessWidget {
                 color: Colors.white,
                 size: iconSize, // Adjusted icon size
               ),
-              SizedBox(width: padding), // Adjusted space between icon and text
+              SizedBox(width: 10), // Adjusted space between icon and text
               Text(
                 title, // Custom title
                 style: TextStyle(
                   fontSize: fontSize, // Adjusted font size
                   fontWeight: FontWeight.w600, // Bold text
                   color: Colors.white,
-                  letterSpacing: 1.1, // Slightly reduced letter spacing for readability
+                  letterSpacing:
+                      1.1, // Slightly reduced letter spacing for readability
                 ),
               ),
             ],
