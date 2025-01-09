@@ -1,4 +1,5 @@
 import 'package:coffee_app/app/controllers/invoice_controller.dart';
+import 'package:coffee_app/components/calculator/calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -65,206 +66,223 @@ class _CashInputDialogState extends State<CashInputDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.3, // Make the dialog wider
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.6,
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: Row(
           children: [
-            const Center(
-              child: Text(
-                "Enter Payment",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            const SizedBox(height: 16),
-            // Dollar Input Field
-            TextField(
-              controller: dollarController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                  RegExp(r'^\d+\.?\d{0,2}'),
-                ), // Allow numbers and up to 2 decimal places
-              ],
-              decoration: InputDecoration(
-                labelText: "Cash in Dollar (\$)",
-                labelStyle: const TextStyle(fontSize: 16),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: const Icon(Icons.attach_money),
-              ),
-              onChanged: (_) => calculateTotals(),
-            ),
-            const SizedBox(height: 16),
-            // Riel Input Field
-            TextField(
-              controller: rielController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly, // Allow only digits
-              ],
-              decoration: InputDecoration(
-                labelText: "Cash in Riel (៛)",
-                labelStyle: const TextStyle(fontSize: 16),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: const Icon(Icons.money),
-              ),
-              onChanged: (value) => formatRielInput(value),
-            ),
-            const SizedBox(height: 16),
-            // Display Total in Riel and Dollar
-            Column(
-              children: [
-                Text(
-                  "Total Dollar: \$${widget.totalDollar.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Total Riel: ៛${widget.totalRiel}",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 2,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.black,
-            ),
-            const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Recived in Dollar: \$${dollarController.text}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  "Recived in Riel: ៛${rielController.text}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  "Total Recived: ៛${totalInDollar.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 2,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.black,
-            ),
-            const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Change in Dollar: \$ ${changeDollar.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  "Change in Riel: ៛${formatter.format(changeRiel)}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  child: const Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.blueGrey, fontSize: 16),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (dollarController.text.isEmpty &&
-                        rielController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Please enter cash in Dollar or Riel!"),
-                          backgroundColor: Colors.red,
+            
+            Expanded(
+              flex: 3,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        "Enter Payment",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
-                      );
-                      return;
-                    }
-                    Get.find<InvoiceController>().checkout();
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    "Checkout",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
+                    // Dollar Input Field
+                    TextField(
+                      controller: dollarController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,2}'),
+                        ), // Allow numbers and up to 2 decimal places
+                      ],
+                      decoration: InputDecoration(
+                        labelText: "Cash in Dollar (\$)",
+                        labelStyle: const TextStyle(fontSize: 16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: const Icon(Icons.attach_money),
+                      ),
+                      onChanged: (_) => calculateTotals(),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    // Riel Input Field
+                    TextField(
+                      controller: rielController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Allow only digits
+                      ],
+                      decoration: InputDecoration(
+                        labelText: "Cash in Riel (៛)",
+                        labelStyle: const TextStyle(fontSize: 16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: const Icon(Icons.money),
+                      ),
+                      onChanged: (value) => formatRielInput(value),
+                    ),
+                    const SizedBox(height: 16),
+                    // Display Total in Riel and Dollar
+                    Column(
+                      children: [
+                        Text(
+                          "Total Dollar: \$${widget.totalDollar.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Total Riel: ៛${widget.totalRiel}",
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 2,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Recived in Dollar: \$${dollarController.text}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Recived in Riel: ៛${rielController.text}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Total Recived: ៛${totalInDollar.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 2,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Change in Dollar: \$ ${changeDollar.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Change in Riel: ៛${formatter.format(changeRiel)}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                          child: const Text(
+                            "Cancel",
+                            style:
+                                TextStyle(color: Colors.blueGrey, fontSize: 16),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (dollarController.text.isEmpty &&
+                                rielController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      "Please enter cash in Dollar or Riel!"),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+                            Get.find<InvoiceController>().checkout();
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                          child: const Text(
+                            "Checkout",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: CalcApp(),
             ),
           ],
         ),
