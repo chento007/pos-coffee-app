@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-
 class CalcApp extends StatefulWidget {
   const CalcApp({Key? key}) : super(key: key);
 
@@ -51,51 +50,42 @@ class CalcAppState extends State<CalcApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Calculator',
-      home: Scaffold(
-        backgroundColor: const Color(0xFF283637),
-        body: Container(
-          padding: const EdgeInsets.all(0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                alignment: const Alignment(1.0, 1.0),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 0),
-                  child: Text(
-                    _history,
-                    style: GoogleFonts.rubik(
-                      textStyle: const TextStyle(
-                        fontSize: 24,
-                        color: Color(0xFF545F61),
-                      ),
-                    ),
-                  ),
+    return Container(
+      color: const Color(0xFF283637),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            alignment: const Alignment(1.0, 1.0),
+            padding: const EdgeInsets.all(5),
+            child: Text(
+              _history,
+              style: GoogleFonts.rubik(
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  color: Color(0xFF545F61),
                 ),
               ),
-              Container(
-                alignment: const Alignment(1.0, 1.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Text(
-                    _expression,
-                    style: GoogleFonts.rubik(
-                      textStyle: const TextStyle(
-                        fontSize: 48,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ..._buildButtonRows(),
-            ],
+            ),
           ),
-        ),
+          Container(
+            alignment: const Alignment(1.0, 1.0),
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Text(
+                _expression,
+                style: GoogleFonts.rubik(
+                  textStyle: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ..._buildButtonRows(),
+        ],
       ),
     );
   }

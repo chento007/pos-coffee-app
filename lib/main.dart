@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
 
 void main() {
-  runApp(ToastificationWrapper(
-    child: GetMaterialApp(
-      title: PROJECT_NAME,
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-      debugShowCheckedModeBanner: false,
+  runApp(
+    ToastificationWrapper(
+      child: GetMaterialApp(
+        title: PROJECT_NAME,
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
+        debugShowCheckedModeBanner: false,
+      ),
     ),
-  ));
+  );
 }

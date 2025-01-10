@@ -81,7 +81,7 @@ class OrderProduct extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Container(
                 padding: EdgeInsets.all(padding),
                 decoration: BoxDecoration(
@@ -170,7 +170,6 @@ class OrderProduct extends StatelessWidget {
             Expanded(
               child: ButtonOrderProduct(
                 onPressed: () {
-                  // Show confirmation dialog
                   ConfirmClearDialog.show(context);
                 },
                 title: "Clear all",

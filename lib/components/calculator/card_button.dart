@@ -13,32 +13,29 @@ class CalcButton extends StatelessWidget {
     required this.text, // Required text field
     this.fillColor,
     this.textColor = 0xFFFFFFFF,
-    this.textSize = 28,
+    this.textSize = 20,
     required this.callback, // Required callback
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      child: SizedBox(
-        width: 70,
-        height: 70,
-        child: FloatingActionButton(
-          backgroundColor: Colors.black26, // Use nullable fillColor
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-          ),
-          onPressed: () {
-            callback(text);
-          },
-          child: Text(
-            text,
-            style: GoogleFonts.rubik(
-              textStyle: TextStyle(
-                fontSize: textSize,
-                color: Color(textColor),
-              ),
+    return SizedBox(
+      width: 65,
+      height: 65,
+      child: FloatingActionButton(
+        backgroundColor: Colors.black26,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        onPressed: () {
+          callback(text);
+        },
+        child: Text(
+          text,
+          style: GoogleFonts.rubik(
+            textStyle: TextStyle(
+              fontSize: textSize,
+              color: Color(textColor),
             ),
           ),
         ),

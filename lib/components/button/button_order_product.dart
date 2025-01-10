@@ -38,7 +38,7 @@ class ButtonOrderProduct extends StatelessWidget {
             ? 8.0
             : isDesktop
                 ? 8.0
-                : 6.0; // Minimal padding for extra small
+                : 6.0; 
 
     final double fontSize = isPhone
         ? 12.0

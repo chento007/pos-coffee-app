@@ -67,8 +67,8 @@ class _CashInputDialogState extends State<CashInputDialog> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6,
-        height: MediaQuery.of(context).size.height * 0.8,
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.9,
         child: Row(
           children: [
             
@@ -280,7 +280,7 @@ class _CashInputDialogState extends State<CashInputDialog> {
                 ),
               ),
             ),
-            Expanded(
+            const Expanded(
               flex: 2,
               child: CalcApp(),
             ),

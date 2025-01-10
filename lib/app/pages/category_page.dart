@@ -158,18 +158,18 @@ class CategoryPage extends StatelessWidget {
                                           color: ColorConstant.primary,
                                           icon: Icons.edit,
                                           text: "Edit",
+                                          
                                           onTap: () {
                                             showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    EditCategoryDialog(
-                                                      onUpdate:
-                                                          (Map<String, dynamic>
-                                                              newItemData) {},
-                                                      category: categoryController
-                                                              .categoriesDashboard[
-                                                          index],
-                                                    ));
+                                              context: context,
+                                              builder: (context) =>
+                                                  EditCategoryDialog(
+                                                onUpdate: (Map<String, dynamic>
+                                                    newItemData) {},
+                                                category: categoryController
+                                                    .categoriesDashboard[index],
+                                              ),
+                                            );
                                           },
                                         ),
                                         const SizedBox(width: 10),

@@ -27,13 +27,13 @@ class CardOrder extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(3),
         child: Row(
           children: [
             Expanded(
               flex: 8,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
                 child: Column(
                   children: [
                     Row(
@@ -85,13 +85,21 @@ class CardOrder extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                  ColorConstant.discount),
+                        InkWell(
+                          onTap: handleEdit,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                              top: 5,
+                              bottom: 5
                             ),
-                            onPressed: handleEdit,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
                             child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Icon(
                                   Icons.edit,
@@ -99,7 +107,7 @@ class CardOrder extends StatelessWidget {
                                   size: 15,
                                 ),
                                 SizedBox(
-                                  width: 3,
+                                  width: 5,
                                 ),
                                 Text(
                                   "Edit",
@@ -108,7 +116,9 @@ class CardOrder extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            )),
+                            ),
+                          ),
+                        ),
                         QuantitySelector(
                           quantity: qty,
                           incrementQuantity: incrementQuantity,
