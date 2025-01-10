@@ -1,5 +1,6 @@
 import 'package:coffee_app/app/controllers/invoice_controller.dart';
 import 'package:coffee_app/components/calculator/calculator.dart';
+import 'package:coffee_app/components/popup/keyboard_input_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,7 @@ class CashInputDialog extends StatefulWidget {
 class _CashInputDialogState extends State<CashInputDialog> {
   final TextEditingController dollarController = TextEditingController();
   final TextEditingController rielController = TextEditingController();
-  final NumberFormat formatter = NumberFormat("#,###"); // Formatter for Riel
+  final NumberFormat formatter = NumberFormat("#,###");
 
   double exchangeRate = 4100.0;
 
@@ -33,6 +34,7 @@ class _CashInputDialogState extends State<CashInputDialog> {
 
   double changeDollar = 0.0;
   double changeRiel = 0.0;
+  bool isKeyboardDollar = true;
 
   void calculateTotals() {
     double inputDollar = double.tryParse(dollarController.text) ?? 0.0;
@@ -57,7 +59,31 @@ class _CashInputDialogState extends State<CashInputDialog> {
       text: formattedValue,
       selection: TextSelection.collapsed(offset: formattedValue.length),
     );
-    calculateTotals(); // Recalculate totals
+    calculateTotals();
+  }
+
+  void updateDollarInput(String value) {
+    setState(() {
+      calculateTotals();
+      if (value == "Clear") {
+        dollarController.clear(); // Clear input
+      } else if (value == "." && dollarController.text.contains(".")) {
+        return; // Prevent multiple decimals
+      } else {
+        dollarController.text += value;
+      }
+    });
+  }
+
+  void updateRielInput(String value) {
+    setState(() {
+      if (value == "X") {
+        rielController.clear();
+      } else {
+        rielController.text += value;
+      }
+      formatRielInput(rielController.text);
+    });
   }
 
   @override
@@ -67,15 +93,14 @@ class _CashInputDialogState extends State<CashInputDialog> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
-        height: MediaQuery.of(context).size.height * 0.9,
+
         child: Row(
           children: [
-            
             Expanded(
               flex: 3,
               child: Container(
                 padding: const EdgeInsets.all(16),
+                width: 100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,44 +115,86 @@ class _CashInputDialogState extends State<CashInputDialog> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const SizedBox(height: 16),
-                    // Dollar Input Field
-                    TextField(
-                      controller: dollarController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,2}'),
-                        ), // Allow numbers and up to 2 decimal places
-                      ],
-                      decoration: InputDecoration(
-                        labelText: "Cash in Dollar (\$)",
-                        labelStyle: const TextStyle(fontSize: 16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        prefixIcon: const Icon(Icons.attach_money),
+
+                    const Text(
+                      'Cash in Dollar (៛)',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
-                      onChanged: (_) => calculateTotals(),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isKeyboardDollar = true;
+                        });
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                              color:
+                                  isKeyboardDollar ? Colors.blue : Colors.grey),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              dollarController.text,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    // Riel Input Field
-                    TextField(
-                      controller: rielController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter
-                            .digitsOnly, // Allow only digits
-                      ],
-                      decoration: InputDecoration(
-                        labelText: "Cash in Riel (៛)",
-                        labelStyle: const TextStyle(fontSize: 16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        prefixIcon: const Icon(Icons.money),
+                    const Text(
+                      'Cash in Riel (៛)',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
-                      onChanged: (value) => formatRielInput(value),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isKeyboardDollar = false;
+                        });
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                              color: !isKeyboardDollar
+                                  ? Colors.blue
+                                  : Colors.grey),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              rielController.text,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 16),
                     // Display Total in Riel and Dollar
@@ -280,9 +347,17 @@ class _CashInputDialogState extends State<CashInputDialog> {
                 ),
               ),
             ),
-            const Expanded(
+            Expanded(
               flex: 2,
-              child: CalcApp(),
+              child: NumberPad(
+                onNumberPress: (value) {
+                  if (isKeyboardDollar) {
+                    updateDollarInput(value);
+                  } else {
+                    updateRielInput(value);
+                  }
+                },
+              ),
             ),
           ],
         ),
