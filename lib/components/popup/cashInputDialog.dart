@@ -93,14 +93,14 @@ class _CashInputDialogState extends State<CashInputDialog> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: SizedBox(
-
+        width: MediaQuery.of(context).size.width * 0.8,
+        // height: MediaQuery.of(context).size.height * 0.8,
         child: Row(
           children: [
             Expanded(
               flex: 3,
               child: Container(
                 padding: const EdgeInsets.all(16),
-                width: 100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,

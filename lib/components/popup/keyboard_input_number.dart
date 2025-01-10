@@ -8,6 +8,13 @@ class NumberPad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        border: Border(
+          right: BorderSide(color: Colors.black, width: 2), // Right border only
+        ),
+      ),
       padding: const EdgeInsets.all(0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -26,8 +33,8 @@ class NumberPad extends StatelessWidget {
                   return GestureDetector(
                     onTap: () => onNumberPress(value),
                     child: Container(
-                      width: 90,
-                      height: 85,
+                      width: 80,
+                      height: 80,
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10),
