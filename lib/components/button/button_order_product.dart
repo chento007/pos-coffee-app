@@ -65,7 +65,7 @@ class ButtonOrderProduct extends StatelessWidget {
                 : 6.0; // Smaller border radius for extra small
 
     return InkWell(
-      onTap: onPressed,
+      onDoubleTap: onPressed,
       splashColor: Colors.white.withOpacity(0.3), // Splash effect when clicked
       highlightColor: Colors.orange.withOpacity(0.1), // Highlight effect
       child: Container(
