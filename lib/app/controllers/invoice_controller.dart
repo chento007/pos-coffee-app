@@ -2,6 +2,7 @@ import 'package:coffee_app/app/models/dto/invoice-item.dto.dart';
 import 'package:coffee_app/app/models/dto/invoice.dto.dart';
 import 'package:coffee_app/app/models/invoice.dart';
 import 'package:coffee_app/app/models/invoice_detail.dart';
+import 'package:coffee_app/app/models/sale_date.dart';
 import 'package:coffee_app/app/notification/toast_notification.dart';
 import 'package:coffee_app/app/response/response_item.dart';
 import 'package:coffee_app/app/services/invoice_service.dart';
@@ -12,7 +13,7 @@ class InvoiceController extends GetxController {
   var invoice = Rx<Invoice?>(null);
   var invoiceDetails = <InvoiceDetail>[].obs;
   final InvoiceService invoiceService = InvoiceService();
-
+  var salesData =Rx<SalesData?>(null);
   var isLoading = false.obs;
   var invoiceDashboard = <Invoice>[].obs;
   var currentPage = 1.obs;
@@ -32,6 +33,7 @@ class InvoiceController extends GetxController {
   void onInit() {
     super.onInit();
     fetchInvoices();
+    fetchSaleDate();
   }
 
   Future<void> fetchInvoices() async {
@@ -50,8 +52,9 @@ class InvoiceController extends GetxController {
       hasPreviousPage.value = fetchedProducts.hasPreviousPage;
       hasNextPage.value = fetchedProducts.hasNextPage;
       invoiceDashboard.assignAll(fetchedProducts.items);
+      await fetchSaleDate();
     } catch (e) {
-      print('Error fetching invoice: $e');
+      // print('Error fetching invoice: $e');
     } finally {
       isLoading(false);
     }
@@ -63,6 +66,12 @@ class InvoiceController extends GetxController {
 
     invoiceDetails.add(detail);
 
+    update();
+  }
+
+  Future<void> fetchSaleDate() async {
+    var data = await invoiceService.findDaily();
+    salesData.value = data;
     update();
   }
 
@@ -98,6 +107,7 @@ class InvoiceController extends GetxController {
         );
         clearInvoice();
         await fetchInvoices();
+        await fetchSaleDate();
       } else {
         Get.snackbar("Failure", "Invoice creation failed!");
       }
