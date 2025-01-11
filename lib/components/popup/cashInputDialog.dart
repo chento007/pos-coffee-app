@@ -94,7 +94,7 @@ class _CashInputDialogState extends State<CashInputDialog> {
       ),
       child: SizedBox(
         width: 800,
-        height: 600,
+        height: 740,
         child: Row(
           children: [
             Expanded(
