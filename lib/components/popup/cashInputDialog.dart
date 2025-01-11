@@ -333,11 +333,14 @@ class _CashInputDialogState extends State<CashInputDialog> {
                               vertical: 12,
                             ),
                           ),
-                          child: const Text(
-                            "Checkout",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: const Text(
+                              "Checkout",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
