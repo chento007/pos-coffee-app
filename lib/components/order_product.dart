@@ -31,12 +31,12 @@ class OrderProduct extends StatelessWidget {
                 : 2.0; // Further reduced for extra small devices from 3.0
 
     final double fontSize = isPhone
-        ? 10.0 // Further reduced from 12.0
+        ? 15.0 // Further reduced from 12.0
         : isTablet
-            ? 12.0 // Further reduced from 14.0
+            ? 15.0 // Further reduced from 14.0
             : isDesktop
-                ? 14.0 // Further reduced from 16.0
-                : 8.0; // Further reduced for extra small devices from 10.0
+                ? 17.0 // Further reduced from 16.0
+                : 15.0; // Further reduced for extra small devices from 10.0
 
     return Obx(() {
       return Center(
