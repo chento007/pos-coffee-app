@@ -27,6 +27,8 @@ class _CashInputDialogState extends State<CashInputDialog> {
   final TextEditingController rielController = TextEditingController();
   final NumberFormat formatter = NumberFormat("#,###");
 
+  bool isAllowCheckout = false;
+
   double exchangeRate = 4100.0;
 
   double totalInRiel = 0.0;
@@ -48,6 +50,8 @@ class _CashInputDialogState extends State<CashInputDialog> {
       totalInDollar = totalInRiel / exchangeRate;
       changeDollar = totalInDollar - widget.totalDollar;
       changeRiel = (totalInDollar - widget.totalDollar) * exchangeRate;
+      isAllowCheckout = totalInDollar >= widget.totalDollar;
+
     });
   }
 
@@ -442,40 +446,42 @@ class _CashInputDialogState extends State<CashInputDialog> {
                                 TextStyle(color: Colors.blueGrey, fontSize: 16),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (dollarController.text.isEmpty &&
-                                rielController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      "Please enter cash in Dollar or Riel!"),
-                                  backgroundColor: Colors.red,
+                        (isAllowCheckout)
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  if (dollarController.text.isEmpty &&
+                                      rielController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Please enter cash in Dollar or Riel!"),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  Get.find<InvoiceController>().checkout(true);
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
                                 ),
-                              );
-                              return;
-                            }
-                            Get.find<InvoiceController>().checkout();
-                            Navigator.of(context).pop();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            child: const Text(
-                              "Checkout",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: const Text(
+                                    "Checkout",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ],

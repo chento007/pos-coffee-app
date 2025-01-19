@@ -76,6 +76,82 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
                   Row(
                     children: [
                       Text(
+                        'Checkout ABA ${invoiceController.salesData.value?.byABA} \$',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.warning,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 5,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.monetization_on_rounded,
+                    color: ColorConstant.warning,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Row(
+                    children: [
+                      Text(
+                        'Checkout Cash ${invoiceController.salesData.value?.byCash} \$',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.warning,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 5,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.monetization_on_rounded,
+                    color: ColorConstant.warning,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Row(
+                    children: [
+                      Text(
                         'Today\'s sales: ${invoiceController.salesData.value?.today} \$',
                         style: TextStyle(
                           fontSize: 14,

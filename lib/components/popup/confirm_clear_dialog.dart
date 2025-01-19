@@ -19,26 +19,81 @@ class ConfirmClearDialog {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.blue),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  width: 140,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            Colors.grey.withOpacity(0.4), // Shadow color
+                        offset: Offset(0, 4), // Vertical shadow position
+                        blurRadius: 8, // Blur effect
+                      ),
+                    ],
+                    gradient: LinearGradient(
+                      colors: [Colors.grey, Colors.grey],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ), // Gradient effect
+                  ),
+                  child: Center(
+                    // Ensures the text is centered
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16, // Increased font size
+                        fontWeight: FontWeight.bold, // Bold for emphasis
+                        letterSpacing: 1.2, // Spacing between letters
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   Get.find<InvoiceController>().clearInvoice();
                   Navigator.of(context).pop();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                ),
-                child: const Text(
-                  "Confirm",
-                  style: TextStyle(color: Colors.white),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  width: 140,
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            Colors.redAccent.withOpacity(0.4), // Shadow color
+                        offset: Offset(0, 4), // Vertical shadow position
+                        blurRadius: 8, // Blur effect
+                      ),
+                    ],
+                    gradient: LinearGradient(
+                      colors: [Colors.red, Colors.redAccent],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ), // Gradient effect
+                  ),
+                  child: Center(
+                    // Ensures the text is centered
+                    child: Text(
+                      "Confirm",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16, // Increased font size
+                        fontWeight: FontWeight.bold, // Bold for emphasis
+                        letterSpacing: 1.2, // Spacing between letters
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

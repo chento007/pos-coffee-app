@@ -3,6 +3,8 @@ class SalesData {
   final String thisWeek;
   final String thisMonth;
   final String thisYear;
+  final String byCash;
+  final String byABA;
 
   // Constructor
   SalesData({
@@ -10,6 +12,8 @@ class SalesData {
     required this.thisWeek,
     required this.thisMonth,
     required this.thisYear,
+    required this.byCash,
+    required this.byABA,
   });
 
   // Factory constructor for JSON deserialization
@@ -19,6 +23,8 @@ class SalesData {
       thisWeek: json['thisWeek'] ?? '',
       thisMonth: json['thisMonth'] ?? '',
       thisYear: json['thisYear'] ?? '',
+      byCash: json['byCash'] ?? '',
+      byABA: json['byABA'] ?? '',
     );
   }
 
@@ -29,6 +35,8 @@ class SalesData {
       'thisWeek': thisWeek,
       'thisMonth': thisMonth,
       'thisYear': thisYear,
+      'byCash': byCash,
+      'byABA': byABA,
     };
   }
 }

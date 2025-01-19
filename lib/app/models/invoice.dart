@@ -7,7 +7,7 @@ class Invoice {
   List<InvoiceItem> details;
   final String createdAt; // Changed to DateTime
   final String updatedAt; // Changed to DateTime
-
+  
   Invoice({
     this.id,
     this.discount,

@@ -7,7 +7,7 @@ class InvoiceDetail {
   double subTotal;
   int quantity;
   double discount;
-
+  
   InvoiceDetail({
     required this.id,
     required this.product,

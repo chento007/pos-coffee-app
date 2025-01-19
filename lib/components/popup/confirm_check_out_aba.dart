@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ConfirmCheckOutAba {
+
   static Future<void> show(BuildContext context) async {
     return showDialog(
       context: context,
@@ -30,7 +31,7 @@ class ConfirmCheckOutAba {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Get.find<InvoiceController>().checkout();
+                  Get.find<InvoiceController>().checkout(false);
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(

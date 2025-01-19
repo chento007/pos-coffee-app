@@ -75,7 +75,7 @@ class InvoiceController extends GetxController {
     update();
   }
 
-  void checkout() async {
+  void checkout(bool byCash) async {
     if (invoiceDetails.isEmpty) {
       Get.snackbar("Error", "Invoice is empty!");
       return;
@@ -86,6 +86,7 @@ class InvoiceController extends GetxController {
     InvoiceDto invoiceDto = InvoiceDto(
       totalAmount: totalAmount,
       discount: invoice?.value?.discount,
+      byCash: byCash,
       items: invoiceDetails
           .map((detail) => InvoiceItemDto(
                 productId: detail.product.id,

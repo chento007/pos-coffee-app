@@ -69,7 +69,7 @@ class ButtonOrderProduct extends StatelessWidget {
       splashColor: Colors.white.withOpacity(0.3), // Splash effect when clicked
       highlightColor: Colors.orange.withOpacity(0.1), // Highlight effect
       child: Container(
-        padding: EdgeInsets.all(10), // Adjusted padding
+        padding: EdgeInsets.only(left: 10,right: 10 ,top: 17, bottom: 17), // Adjusted padding
         decoration: BoxDecoration(
           color: buttonColor,
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
