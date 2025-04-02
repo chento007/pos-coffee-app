@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:coffee_app/app/controllers/invoice_controller.dart';
 import 'package:coffee_app/core/values/color_const.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,10 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
 
   late String _currentDateTime;
   late Timer _timer;
-
+  bool isPasswordVerified = false;
+  bool showPrice = false; // New state to toggle visibility
+  final passwordController = TextEditingController();
+  String correctPassword = "TwoBean*2025#";
   @override
   void initState() {
     super.initState();
@@ -75,12 +80,56 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
                   const SizedBox(width: 8),
                   Row(
                     children: [
-                      Text(
-                        'Checkout ABA ${invoiceController.salesData.value?.byABA} \$',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: ColorConstant.warning,
+                      InkWell(
+                        onTap: () {
+                          if (!isPasswordVerified) {
+                            // Show password dialog if not verified yet
+                            _showPasswordDialog(context);
+                          } else {
+                            // Toggle price visibility if already verified
+                            setState(() {
+                              showPrice = !showPrice;
+                              isPasswordVerified = !showPrice;
+                            });
+                          }
+                        },
+                        child: Container(
+                          child: isPasswordVerified && showPrice
+                              ? Text(
+                                  // Show actual price if verified & toggled
+                                  'Checkout ABA ${invoiceController.salesData.value?.byABA} \$',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorConstant.warning,
+                                  ),
+                                )
+                              : Stack(
+                                  // Show blurred price otherwise
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Text(
+                                      // Hidden (transparent) text to maintain layout
+                                      'Checkout ABA ${invoiceController.salesData.value?.byABA} \$',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.transparent,
+                                      ),
+                                    ),
+                                    Container(
+                                      color: Colors.white.withOpacity(0.1),
+                                      child: Text(
+                                        'Checkout ABA **** \$',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: ColorConstant.warning,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ),
                     ],
@@ -113,12 +162,56 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
                   const SizedBox(width: 8),
                   Row(
                     children: [
-                      Text(
-                        'Checkout Cash ${invoiceController.salesData.value?.byCash} \$',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: ColorConstant.warning,
+                      InkWell(
+                        onTap: () {
+                          if (!isPasswordVerified) {
+                            // Show password dialog if not verified yet
+                            _showPasswordDialog(context);
+                          } else {
+                            // Toggle price visibility if already verified
+                            setState(() {
+                              showPrice = !showPrice;
+                              isPasswordVerified = !showPrice;
+                            });
+                          }
+                        },
+                        child: Container(
+                          child: isPasswordVerified && showPrice
+                              ? Text(
+                                  // Show actual price if verified & toggled
+                                  'Checkout Cash ${invoiceController.salesData.value?.byCash} \$',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorConstant.warning,
+                                  ),
+                                )
+                              : Stack(
+                                  // Show blurred price otherwise
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Text(
+                                      // Hidden (transparent) text to maintain layout
+                                      'Checkout Cash ${invoiceController.salesData.value?.byABA} \$',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.transparent,
+                                      ),
+                                    ),
+                                    Container(
+                                      color: Colors.white.withOpacity(0.1),
+                                      child: Text(
+                                        'Checkout Cash **** \$',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: ColorConstant.warning,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ),
                     ],
@@ -151,12 +244,56 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
                   const SizedBox(width: 8),
                   Row(
                     children: [
-                      Text(
-                        'Today\'s sales: ${invoiceController.salesData.value?.today} \$',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: ColorConstant.warning,
+                      InkWell(
+                        onTap: () {
+                          if (!isPasswordVerified) {
+                            // Show password dialog if not verified yet
+                            _showPasswordDialog(context);
+                          } else {
+                            // Toggle price visibility if already verified
+                            setState(() {
+                              showPrice = !showPrice;
+                              isPasswordVerified = !showPrice;
+                            });
+                          }
+                        },
+                        child: Container(
+                          child: isPasswordVerified && showPrice
+                              ? Text(
+                                  // Show actual price if verified & toggled
+                                  'Today\'s sales: ${invoiceController.salesData.value?.today} \$',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorConstant.warning,
+                                  ),
+                                )
+                              : Stack(
+                                  // Show blurred price otherwise
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Text(
+                                      // Hidden (transparent) text to maintain layout
+                                      'Today\'s sales: ${invoiceController.salesData.value?.today} \$',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.transparent,
+                                      ),
+                                    ),
+                                    Container(
+                                      color: Colors.white.withOpacity(0.1),
+                                      child: Text(
+                                        'Today\'s sales: **** \$',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: ColorConstant.warning,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ),
                     ],
@@ -164,6 +301,7 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
                 ],
               ),
             ),
+  
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               margin: EdgeInsets.only(right: 10),
@@ -204,5 +342,43 @@ class _CurrentDateTimeActionState extends State<CurrentDateTimeAction> {
             ),
           ],
         ));
+  }
+
+  void _showPasswordDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Enter Password"),
+        content: TextField(
+          controller: passwordController,
+          obscureText: true,
+          decoration: InputDecoration(hintText: "Password"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              if (passwordController.text == correctPassword) {
+                setState(() {
+                  isPasswordVerified = true;
+                  showPrice =
+                      true;
+                      passwordController.text= '';
+                });
+                Navigator.pop(context);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Incorrect password")),
+                );
+              }
+            },
+            child: Text("Submit"),
+          ),
+        ],
+      ),
+    );
   }
 }
